@@ -20,6 +20,25 @@ var OpenInstallationCategoryTypes = struct {
 	VERIFIED: "VERIFIED",
 }
 
+// OpenInstallationObservabilityPackAlertType - Type of Alert
+type OpenInstallationObservabilityPackAlertType string
+
+var OpenInstallationObservabilityPackAlertTypeTypes = struct {
+	// Baseline alert
+	BASELINE OpenInstallationObservabilityPackAlertType
+	// Outlier alert
+	OUTLIER OpenInstallationObservabilityPackAlertType
+	// Static alert
+	STATIC OpenInstallationObservabilityPackAlertType
+}{
+	// Baseline alert
+	BASELINE: "BASELINE",
+	// Outlier alert
+	OUTLIER: "OUTLIER",
+	// Static alert
+	STATIC: "STATIC",
+}
+
 // OpenInstallationObservabilityPackLevel - Level categorization of Observability Pack
 type OpenInstallationObservabilityPackLevel string
 
@@ -227,6 +246,8 @@ type OpenInstallationLogMatch struct {
 
 // OpenInstallationObservabilityPack - An Observability Pack (collection of related Observability features)
 type OpenInstallationObservabilityPack struct {
+	// List of Alerts contained in this Observability Pack
+	Alerts []OpenInstallationObservabilityPackAlert `json:"alerts"`
 	// List of contributors for this Observability Pack
 	Authors []string `json:"authors"`
 	// List of Dashboards contained in this Observability Pack
@@ -243,8 +264,28 @@ type OpenInstallationObservabilityPack struct {
 	LogoURL string `json:"logoUrl,omitempty"`
 	// The name of this Observability Pack
 	Name string `json:"name"`
+	// URL to link to location of this Observability Pack in the open source repo
+	PackURL string `json:"packUrl,omitempty"`
+	// A short form description for this Observability Pack.
+	Summary string `json:"summary"`
+	// Tags for filtering / searching criteria
+	Tags []string `json:"tags"`
+	// The name of the pack displayed everywhere the pack is referenced
+	Title string `json:"title,omitempty"`
 	// URL of website for this Observability Pack
 	WebsiteURL string `json:"websiteUrl,omitempty"`
+}
+
+// OpenInstallationObservabilityPackAlert - An Observability Pack Alert
+type OpenInstallationObservabilityPackAlert struct {
+	// Details of this Alert
+	Details string `json:"details,omitempty"`
+	// Name of this Alert
+	Name string `json:"name"`
+	// Type of Alert
+	Type OpenInstallationObservabilityPackAlertType `json:"type"`
+	// URL of Alert JSON definition
+	URL string `json:"url"`
 }
 
 // OpenInstallationObservabilityPackDashboard - An Observability Pack Dashboard
@@ -376,8 +417,6 @@ type OpenInstallationRecipe struct {
 	// NRQL the newrelic-cli uses to validate this recipe
 	// is successfully sending data to New Relic
 	ValidationNRQL NRQL `json:"validationNrql,omitempty"`
-	// validation url to validate with infra health endpoint
-	ValidationURL string `json:"validationUrl,omitempty"`
 }
 
 // OpenInstallationRecipeInputVariable - Recipe input variable prompts displayed to the user prior to execution
