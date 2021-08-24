@@ -5,6 +5,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
+	"github.com/newrelic/newrelic-cli/internal/cli"
 	configAPI "github.com/newrelic/newrelic-cli/internal/config/api"
 	"github.com/newrelic/newrelic-cli/internal/install/types"
 	"github.com/newrelic/newrelic-client-go/pkg/entities"
@@ -165,8 +166,14 @@ func (r InstallEventsReporter) UpdateRequired(status *InstallStatus) error {
 }
 
 func buildInstallStatus(state installevents.InstallationInstallStateType, status *InstallStatus, event *RecipeStatusEvent) installevents.InstallationInstallStatusInput {
+
+	log.Print("\n****************************\n")
+	log.Printf("buildInstallStatus - status.CLIVersion:      %+v", status.CLIVersion)
+	log.Printf("buildInstallStatus - getCLIVersion(status):  %+v", getCLIVersion(status))
+	log.Print("\n****************************\n")
+
 	i := installevents.InstallationInstallStatusInput{
-		CliVersion: status.CLIVersion,
+		CliVersion: getCLIVersion(status),
 		Error: installevents.InstallationStatusErrorInput{
 			Details: status.Error.Details,
 			Message: status.Error.Message,
@@ -195,8 +202,13 @@ func buildInstallStatus(state installevents.InstallationInstallStateType, status
 }
 
 func buildRecipeStatus(status *InstallStatus, event *RecipeStatusEvent, statusType *installevents.InstallationRecipeStatusType) installevents.InstallationRecipeStatus {
+	log.Print("\n****************************\n")
+	log.Printf("buildInstallStatus - status.CLIVersion:      %+v", status.CLIVersion)
+	log.Printf("buildInstallStatus - getCLIVersion(status):  %+v", getCLIVersion(status))
+	log.Print("\n****************************\n")
+
 	i := installevents.InstallationRecipeStatus{
-		CliVersion: status.CLIVersion,
+		CliVersion: getCLIVersion(status),
 		Complete:   status.Complete,
 		Error: installevents.InstallationStatusErrorInput{
 			Details: status.Error.Details,
@@ -229,4 +241,13 @@ func buildRecipeStatus(status *InstallStatus, event *RecipeStatusEvent, statusTy
 	}
 
 	return i
+}
+
+func getCLIVersion(status *InstallStatus) string {
+	cliVersion := status.CLIVersion
+	if cliVersion == "" {
+		cliVersion = cli.Version()
+	}
+
+	return cliVersion
 }
