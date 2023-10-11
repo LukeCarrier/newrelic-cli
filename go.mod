@@ -34,9 +34,9 @@ require (
 	github.com/tidwall/gjson v1.8.1
 	github.com/tidwall/sjson v1.1.7
 	github.com/tklauser/go-sysconf v0.3.7 // indirect
-	golang.org/x/net v0.0.0-20210505214959-0714010a04ed
-	golang.org/x/term v0.0.0-20210615171337-6886f2dfbf5b
-	golang.org/x/tools v0.1.3
+	golang.org/x/net v0.17.0
+	golang.org/x/term v0.13.0
+	golang.org/x/tools v0.6.0
 	gopkg.in/yaml.v2 v2.4.0
 	gotest.tools/gotestsum v1.7.0
 	mvdan.cc/sh/v3 v3.3.1
